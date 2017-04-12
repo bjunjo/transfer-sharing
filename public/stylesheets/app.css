@@ -1,0 +1,27 @@
+/* MENU BAR */
+i.icon {
+  font-size: 2em;
+}
+
+.row {
+  margin-top: 15%;
+  height: 100px;
+}
+
+img.column.img {
+  background-position: center;
+}
+
+.ui.segment {
+  height: 450px;
+  padding: 0;
+}
+
+img.ui.image {
+  height: 50%;
+  width: 100%
+}
+
+.contents {
+  padding: 25px;
+}
