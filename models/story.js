@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 var storySchema = new mongoose.Schema({
    title: String,
    image: String,
-   description: String,
+   body: String,
    created:  {type: Date, default: Date.now}
 });
 

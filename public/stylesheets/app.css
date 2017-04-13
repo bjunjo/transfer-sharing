@@ -25,3 +25,11 @@ img.ui.image {
 .contents {
   padding: 25px;
 }
+
+.container.main {
+    margin-top: 7.0em;
+}
+
+a { 
+  color: inherit; 
+} 

@@ -1,18 +1,20 @@
 <% include partials/header.ejs %>
 <main>
   <div class="ui container">
-    <div class="ui three column centered grid">
+    <div class="ui three column grid">
       <div class="row">
         <% stories.forEach(function(story){ %>
           <div class="column">
-            <div class="ui segment">
-              <img class="ui image"src="<%= story.image %>" alt="image">
-              <div class="contents">
-              <h2><%= story.title %></h2>
-              <p><%= story.description %></p>
-              <span><%= story.created.toDateString()%></span>
+            <a href="/stories/<%= story._id %>">
+              <div class="ui segment">
+                <img class="ui image"src="<%= story.image %>" alt="image">
+                <div class="contents">
+                  <h2><%= story.title %></h2>
+                  <p><%- story.body.substring(0, 100)%>...</p>
+                  <span><%= story.created.toDateString()%></span>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         <% }); %>
       </div>

@@ -44,6 +44,34 @@ app.get("/stories", function(req, res){
     }
   });
 });
+
+// NEW
+app.get("/stories/new", function(req, res){
+  res.render("new");
+});
+
+// CREATE
+app.post("/stories", function(req, res){
+  Story.create(req.body.story, function(err, newStory){
+    if(err){
+      res.render("new");
+    } else {
+      res.redirect("/stories")
+    }
+  });
+});
+
+// SHOW
+app.get("/stories/:id", function(req,res){
+  Story.findById(req.params.id, function(err, foundStory){
+    if(err){
+      res.redirect("/stories");
+    } else {
+      res.render("show", {story: foundStory});
+    }
+  });
+});
+
 // server listening
 app.listen(1234, process.env.IP, function(){
   console.log("Server started...");
