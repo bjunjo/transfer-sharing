@@ -14,7 +14,45 @@
                 <button class="ui red basic button">Delete</button>
             </form>
         </div>
-    </div>
+        <!-- COMMENTS -->
+        <div class="ui comments">
+            <h3 class="ui dividing header">Comments</h3>
+            <div class="ui form">
+                <div class="field">
+                    <form class="ui reply form"action="/stories/<%= story._id %>" method="POST">
+                        <div class="inline fields">
+                            <div class="five wide field">
+                                <input type="text" name="comment[author]" placeholder="author">
+                            </div>
+                            <input type="text" name="comment[text]" placeholder="Leave a comment...">
+                        </div>
+                        <button class="ui blue labled submit icon button">
+                            <i class="icon edit"></i> Add Reply
+                        </button>
+                </div>
+                    </form>
+                    <div class="item">
+                        <% story.comments.forEach(function(comment){ %>
+                            <div class="comment">
+                                <a class="avatar">img</a> 
+                                <div class="content">
+                                    <a class="author"><%= comment.author%></a>
+                                    <div class="metadata">
+                                        <span class="date"><%= comment.created.toDateString() %></span>
+                                    </div>
+                                    <div class="text">
+                                        <p><%= comment.text %></p>
+                                    </div>
+                                    <div class="actions">
+                                        <a class="reply">Reply</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <%  }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
     
 </div>
 <% include ./partials/footer %>

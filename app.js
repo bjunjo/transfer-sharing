@@ -41,7 +41,6 @@ app.get("/stories/new", function(req, res){
 // CREATE
 app.post("/stories", function(req, res){
   req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
-  console.log(req.body.story.body);
   Story.create(req.body.story, function(err, newStory){
     if(err){
       res.render("new");
@@ -60,6 +59,32 @@ app.get("/stories/:id", function(req,res){
       res.render("show", {story: foundStory});
     }
   });
+});
+
+// ==============
+// Comments
+// ==============
+app.post("/stories/:id", function(req, res){
+  // find story id
+  Story.findById(req.params.id, function(err, story){
+    if(err){
+      console.log(err);
+      res.redirect("/stories/" + req.params.id);
+    } else {
+      // add comment
+    Comment.create(req.body.comment, function(err, comment){
+      if(err){
+        console.log(err);
+      } else {
+        story.comments.push(comment);
+        story.save();
+        res.redirect("/stories/" + story._id);
+      }
+    });
+    }
+  });
+  // connect new comment to the story
+  // redirect to the story's show page
 });
 
 // EDIT
