@@ -2,20 +2,33 @@ var expressSanitizer = require("express-sanitizer"),
     methodOverride   = require("method-override"),
     bodyParser       = require("body-parser"),
     mongoose         = require("mongoose"),
+    passport         = require("passport"),
+    LocalStrategy    = require("passport-local"),
     express          = require("express"),
-    Comment          = require("./models/comment");
-    Story            = require("./models/story");
+    app              = express(),
+    Comment          = require("./models/comment"),
+    Story            = require("./models/story"),
+    User             = require("./models/user");
 
-app = express();
-
-// App Configuration
 mongoose.connect("mongodb://localhost/ts_0");
-app.set("view engine", "ejs");
-app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 
+// Passport Configuration
+app.use(require("express-session")({
+  secret: "Secret cat",
+  resave: false,
+  saveUnitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 // RESTFUL routes
 // landing page
 app.get("/", function(req, res){
@@ -61,9 +74,7 @@ app.get("/stories/:id", function(req,res){
   });
 });
 
-// ==============
-// Comments
-// ==============
+// Make Comments on a show page
 app.post("/stories/:id", function(req, res){
   // find story id
   Story.findById(req.params.id, function(err, story){
@@ -83,8 +94,6 @@ app.post("/stories/:id", function(req, res){
     });
     }
   });
-  // connect new comment to the story
-  // redirect to the story's show page
 });
 
 // EDIT
@@ -121,8 +130,30 @@ app.delete("/stories/:id", function(req, res){
   });
 });
 
+// =======
+// Auth
+// =======
+// Show regsiter form
+app.get("/regsiter", function(req, res){
+  res.render("register");
+});
+// Handle sign up logic
+app.post("/register", function(req, res){
+  var newUser = new User({username: req.body.username});
+  User.register(newUser, req.body.password, function(err, user){
+    if(err){
+      console.log(err);
+      return res.render("register");
+    }
+    passport.authenticate("local")(req, res, function(){
+      res.redirect("/stories");
+    });
+  });
+});
+// Logic Route
+
 // server listening
-app.listen(1234, process.env.IP, function(){
+app.listen(3000, process.env.IP, function(){
   console.log("Server started...");
 });
 
