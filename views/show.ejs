@@ -8,7 +8,9 @@
             </div>
             <div class="description">
                 <p><%- story.body %></p>
-                <p>Submitted By <%= story.author.username %></p>
+                <p>
+                    <em>Submitted By <%= story.author.username %> </em>
+                </p>
             </div>
             <a class="ui orange basic button" href="/stories/<%= story._id %>/edit">Edit</a>
             <form id="delete" action="/stories/<%= story._id %>?_method=DELETE" method="POST">

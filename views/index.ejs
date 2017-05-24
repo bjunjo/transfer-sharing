@@ -11,6 +11,9 @@
                 <div class="contents">
                   <h2><%= story.title %></h2>
                   <p><%- story.body.substring(0, 100)%>...</p>
+                  <p>
+                    <em>Submitted By <%= story.author.username %> </em>
+                  </p>
                   <span><%= story.created.toDateString()%></span>
                 </div>
               </div>

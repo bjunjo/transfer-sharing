@@ -21,12 +21,20 @@ router.get("/new", isLoggedIn, function(req, res){
 
 // CREATE
 router.post("/", isLoggedIn, function(req, res){
+  var title = req.body.story.title,
+      image = req.body.story.image,
+      body  = req.body.story.body,
+      author = {
+        id: req.user._id,
+        username: req.user.username
+      },
+      newStory = {title: title, image: image, body: body, author: author}
   req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
-  Story.create(req.body.story, function(err, newStory){
+  Story.create(newStory, function(err, newStory){
     if(err){
       res.render("new");
     } else {
-      res.redirect("/")
+      res.redirect("/stories")
     }
   });
 });
@@ -70,7 +78,7 @@ router.post("/:id", isLoggedIn, function(req, res){
 });
 
 // EDIT
-router.get("/:id/edit", function(req, res){
+router.get("/:id/edit", isLoggedIn, function(req, res){
   Story.findById(req.params.id, function(err, foundStory){
     if(err){
       res.redirect("/");
