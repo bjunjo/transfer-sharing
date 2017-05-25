@@ -78,35 +78,35 @@ router.post("/:id", isLoggedIn, function(req, res){
 });
 
 // EDIT
-router.get("/:id/edit", isLoggedIn, function(req, res){
+router.get("/:id/edit", checkStoryOwnership, function(req, res){
   Story.findById(req.params.id, function(err, foundStory){
     if(err){
       res.redirect("/");
     } else {
       res.render("edit", {story: foundStory});
     }
-  });
+  }); 
 });
 
 // UPDATE
-router.put("/:id", function(req, res){
+router.put("/:id", checkStoryOwnership, function(req, res){
   req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
   Story.findByIdAndUpdate(req.params.id, req.body.story, function(err, updatedStory){
     if(err){
       res.redirect("back");
     } else {
-      res.redirect("/" + req.params.id);
+      res.redirect("" + req.params.id);
     }
   });
 });
 
 // DELETE
-router.delete("/:id", function(req, res){
+router.delete("/:id", checkStoryOwnership, function(req, res){
   Story.findByIdAndRemove(req.params.id, function(err, removedStory){
     if(err){
       res.redirect("back");
     } else {
-      res.redirect("/");
+      res.redirect("/stories");
     }
   });
 });
@@ -117,5 +117,23 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkStoryOwnership(req, res, next){
+  if(req.isAuthenticated()){
+      Story.findById(req.params.id, function(err, foundStory){
+      if(err){
+        res.redirect("back");
+      } else {
+        if(foundStory.author.id.equals(req.user._id)){
+          next();
+        } else {
+          res.redirect("back")
+        }
+      }
+    });
+  } else {
+    res.redirect("/login")
+  }
 }
 module.exports = router;

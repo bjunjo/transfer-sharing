@@ -12,10 +12,12 @@
                     <em>Submitted By <%= story.author.username %> </em>
                 </p>
             </div>
-            <a class="ui orange basic button" href="/stories/<%= story._id %>/edit">Edit</a>
-            <form id="delete" action="/stories/<%= story._id %>?_method=DELETE" method="POST">
-                <button class="ui red basic button">Delete</button>
-            </form>
+            <% if(currentUser && story.author.id.equals(currentUser._id)){ %>
+                <a class="ui orange basic button" href="/stories/<%= story._id %>/edit">Edit</a>
+                <form id="delete" action="/stories/<%= story._id %>?_method=DELETE" method="POST">
+                    <button class="ui red basic button">Delete</button>
+                </form>
+            <% }  %>
         </div>
         <!-- COMMENTS -->
         <div class="ui comments">
@@ -85,7 +87,6 @@
                 </div>
             </div>
         </div>
-    
 </div>
 <% include ./partials/footer %>
 
