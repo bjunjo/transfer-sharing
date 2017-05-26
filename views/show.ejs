@@ -77,7 +77,8 @@
                                         <p><%= comment.text %></p>
                                     </div>
                                     <div class="actions">
-                                        <a class="reply">Reply</a>
+                                        <a class="reply" href="/stories/<%= story._id %>/<%= comment._id %>/edit">Edit</a>
+                                        <a class="reply">Remove</a>
                                     </div>
                                 </div>
                             </div>

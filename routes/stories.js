@@ -50,7 +50,7 @@ router.get("/:id", function(req,res){
   });
 });
 
-// Make comments on a show page
+// Comment CREATE 
 router.post("/:id", isLoggedIn, function(req, res){
   // find story id
   Story.findById(req.params.id, function(err, story){
@@ -75,9 +75,32 @@ router.post("/:id", isLoggedIn, function(req, res){
     });
     }
   });
+  console.log(comment);
 });
 
-// EDIT
+// Comment Edit
+router.get("/:id/:comment_id/edit", function(req, res){
+  Comment.findById(req.params.comment_id, function(err, foundComment){
+    if(err){
+      console.log(err);
+    } else {
+      res.render("comment_edit",{story_id: req.params.id, comment: foundComment});
+    }
+  });
+});
+
+// Comment UPDATE
+router.put("/:id/:comment_id", function(req, res){
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+    if(err){
+      res.redirect("back")
+    } else {
+      res.redirect("/" + req.params.id)
+    }
+  });
+});
+
+// Story Edit
 router.get("/:id/edit", checkStoryOwnership, function(req, res){
   Story.findById(req.params.id, function(err, foundStory){
     if(err){
@@ -88,7 +111,7 @@ router.get("/:id/edit", checkStoryOwnership, function(req, res){
   }); 
 });
 
-// UPDATE
+// Story UPDATE
 router.put("/:id", checkStoryOwnership, function(req, res){
   req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
   Story.findByIdAndUpdate(req.params.id, req.body.story, function(err, updatedStory){
