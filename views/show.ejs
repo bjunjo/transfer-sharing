@@ -46,9 +46,6 @@
                                     <div class="text">
                                         <p><%= comment.text %></p>
                                     </div>
-                                    <div class="actions">
-                                        <a class="reply">Reply</a>
-                                    </div>
                                 </div>
                             </div>
                         <%  }); %>
@@ -78,8 +75,11 @@
                                     </div>
                                     <div class="actions">
                                         <a class="reply" href="/stories/<%= story._id %>/<%= comment._id %>/edit">Edit</a>
-                                        <a class="reply">Remove</a>
-                                    </div>
+                                        <form id="remove" action="/stories/<%= story._id %>/<%= comment._id  %>?_method=DELETE" method="POST">
+                    <button class="reply">Delete</button>
+                </form>
+                                        
+
                                 </div>
                             </div>
                         <%  }); %>

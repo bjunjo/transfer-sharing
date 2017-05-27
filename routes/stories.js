@@ -75,7 +75,6 @@ router.post("/:id", isLoggedIn, function(req, res){
     });
     }
   });
-  console.log(comment);
 });
 
 // Comment Edit
@@ -95,7 +94,17 @@ router.put("/:id/:comment_id", function(req, res){
     if(err){
       res.redirect("back")
     } else {
-      res.redirect("/" + req.params.id)
+      res.redirect("/stories/" + req.params.id)
+    }
+  });
+});
+// Comment Delete
+router.delete("/:id/:comment_id", function(req, res){
+  Comment.findByIdAndRemove(req.params.comment_id, function(err, removedComment){
+    if(err){
+      res.redirect("back");
+    } else {
+      res.redirect("/stories/" + req.params.id);
     }
   });
 });
@@ -113,7 +122,7 @@ router.get("/:id/edit", checkStoryOwnership, function(req, res){
 
 // Story UPDATE
 router.put("/:id", checkStoryOwnership, function(req, res){
-  req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
+  // req.body.story.body = req.sanitize(req.body.story.body); // use a middleware later
   Story.findByIdAndUpdate(req.params.id, req.body.story, function(err, updatedStory){
     if(err){
       res.redirect("back");
@@ -123,7 +132,7 @@ router.put("/:id", checkStoryOwnership, function(req, res){
   });
 });
 
-// DELETE
+// Story DELETE
 router.delete("/:id", checkStoryOwnership, function(req, res){
   Story.findByIdAndRemove(req.params.id, function(err, removedStory){
     if(err){
