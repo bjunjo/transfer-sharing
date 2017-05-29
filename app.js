@@ -1,10 +1,11 @@
-var expressSanitizer = require("express-sanitizer"),
-    methodOverride   = require("method-override"),
+var express          = require("express"),
+    expressSanitizer = require("express-sanitizer"),
     bodyParser       = require("body-parser"),
     mongoose         = require("mongoose"),
+    flash            = require("connect-flash"),
     passport         = require("passport"),
     LocalStrategy    = require("passport-local"),
-    express          = require("express"),
+    methodOverride   = require("method-override"),
     Comment          = require("./models/comment"),
     Story            = require("./models/story"),
     User             = require("./models/user"),
@@ -18,6 +19,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(expressSanitizer());
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // Passport Configuration
 app.use(require("express-session")({
@@ -35,6 +37,7 @@ passport.deserializeUser(User.deserializeUser());
 // Middleware
 app.use(function(req, res, next){
    res.locals.currentUser = req.user;
+   // req.locals.error    = req.flash("error");
    next();
 });
 
