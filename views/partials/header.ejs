@@ -21,3 +21,19 @@
     <a href="/logout" class="item">Log out</a>
   <% } %>
 </div>
+<div id="content" class="ui container">
+  <% if(error && error.length > 0){ %> 
+      <div class="ui warning message">
+        <div class="header">
+          <%= error  %>
+        </div>
+      </div>
+    <% } %> 
+    <% if(success && success.length > 0){ %>
+        <div class="ui success message">
+          <div class="header">
+            <%= success  %>
+          </div>
+       </div>
+  <% } %>
+</div>

@@ -34,6 +34,10 @@ a {
   color: inherit; 
 } 
 
+.ui#content{
+  padding-top: 100px;
+}
+
 /* delete button */
 .comment_delete {
   cursor: pointer;

@@ -17,7 +17,6 @@ mongoose.connect("mongodb://localhost/ts_0");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 app.use(flash());
 
@@ -37,7 +36,8 @@ passport.deserializeUser(User.deserializeUser());
 // Middleware
 app.use(function(req, res, next){
    res.locals.currentUser = req.user;
-   // req.locals.error    = req.flash("error");
+   res.locals.error = req.flash("error");
+   res.locals.success = req.flash("success");
    next();
 });
 
